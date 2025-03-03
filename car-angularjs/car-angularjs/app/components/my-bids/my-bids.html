@@ -1,0 +1,75 @@
+<div class="my-bids-container">
+    <!-- Status Filter -->
+    <div class="filter-container">
+        <select ng-model="vm.statusFilter" 
+                ng-change="vm.filterByStatus(vm.statusFilter)">
+            <option value="all">All Bids</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+        </select>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-spinner" ng-if="vm.isLoading">
+        <div class="spinner"></div>
+        <p>Loading your bids...</p>
+    </div>
+
+    <!-- Bids Grid -->
+    <div class="bids-container" ng-if="!vm.isLoading">
+        <!-- No Bids Message -->
+        <div class="no-bids" ng-if="!vm.bids.length">
+            <p>No bids found</p>
+        </div>
+
+        <!-- Bid Cards -->
+        <div class="bid-card {{bid.status.toLowerCase()}}" 
+             ng-repeat="bid in vm.bids">
+            <div class="bid-content">
+                <h3>{{bid.car.make}} {{bid.car.model}}</h3>
+                <div class="bid-details">
+                    <p>From: {{bid.start_date | date:'MMM dd, yyyy'}}</p>
+                    <p>To: {{bid.end_date | date:'MMM dd, yyyy'}}</p>
+                    <p>Bid Amount: ${{bid.bid_amount}}</p>
+                    <p>Status: {{bid.status}}</p>
+                    <button class="view-invoice-btn" 
+                            ng-if="bid.status === 'completed'"
+                            ng-click="vm.showInvoice(bid.id)">
+                        <span class="material-icons">receipt</span>
+                        View Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" ng-if="vm.totalPages > 1">
+        <button ng-click="vm.changePage(1)" 
+                ng-disabled="vm.currentPage === 1">
+            <span class="material-icons">first_page</span>
+        </button>
+        
+        <button ng-click="vm.changePage(vm.currentPage - 1)" 
+                ng-disabled="vm.currentPage === 1">
+            <span class="material-icons">chevron_left</span>
+        </button>
+
+        <button ng-repeat="page in [] | range:vm.totalPages"
+                ng-click="vm.changePage(page)"
+                ng-class="{'active': page === vm.currentPage}">
+            {{page}}
+        </button>
+
+        <button ng-click="vm.changePage(vm.currentPage + 1)" 
+                ng-disabled="vm.currentPage === vm.totalPages">
+            <span class="material-icons">chevron_right</span>
+        </button>
+        
+        <button ng-click="vm.changePage(vm.totalPages)" 
+                ng-disabled="vm.currentPage === vm.totalPages">
+            <span class="material-icons">last_page</span>
+        </button>
+    </div>
+</div>

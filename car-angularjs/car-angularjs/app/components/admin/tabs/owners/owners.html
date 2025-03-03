@@ -1,0 +1,102 @@
+<div class="tab-pane" ng-init="vm.init()">
+    <h2>Owner Management</h2>
+    
+    <div class="owners-container" ng-class="{'loading': vm.loading.owners}">
+        <div class="loading-overlay" ng-if="vm.loading.owners">
+            <div class="spinner"></div>
+            <p>Loading owners...</p>
+        </div>
+        
+        <div class="filter-bar">
+            <input type="text" 
+                   ng-model="vm.ownerSearch" 
+                   placeholder="Search owners..." 
+                   class="search-input">
+        </div>
+
+        <!-- Tab navigation for owner types -->
+        <div class="tab-buttons owner-tabs">
+            <button ng-class="{active: vm.ownerStatus === 'all'}" ng-click="vm.ownerStatus = 'all'">
+                All Owners ({{vm.owners.length}})
+            </button>
+            <button ng-class="{active: vm.ownerStatus === 'active'}" ng-click="vm.ownerStatus = 'active'">
+                Active ({{vm.activeOwners.length}})
+            </button>
+            <button ng-class="{active: vm.ownerStatus === 'blocked'}" ng-click="vm.ownerStatus = 'blocked'">
+                Blocked ({{vm.blockedOwners.length}})
+            </button>
+        </div>
+
+        <!-- Active owners table -->
+        <div class="owners-table" ng-if="vm.ownerStatus === 'all' || vm.ownerStatus === 'active'">
+            <h3>Active Owners</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Join Date</th>
+                        <th>Cars Listed</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="owner in vm.activeOwners | filter:vm.ownerSearch">
+                        <td>{{owner.name}}</td>
+                        <td>{{owner.email}}</td>
+                        <td>{{owner.created_at | date:'MMM dd, yyyy'}}</td>
+                        <td>{{owner.carCount || 0}}</td>
+                        <td class="action-cell">
+                            <button class="action-btn view" ng-click="vm.viewOwnerDetails(owner)">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                            <button class="action-btn block" ng-click="vm.blockOwner(owner)" ng-disabled="owner.processing">
+                                <span class="material-icons" ng-if="!owner.processing">block</span>
+                                <span class="spinner" ng-if="owner.processing"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-if="vm.activeOwners.length === 0">
+                        <td colspan="5" class="empty-state">No active owners found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Blocked owners table -->
+        <div class="owners-table" ng-if="vm.ownerStatus === 'all' || vm.ownerStatus === 'blocked'">
+            <h3>Blocked Owners</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Join Date</th>
+                        <th>Cars Listed</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="owner in vm.blockedOwners | filter:vm.ownerSearch">
+                        <td>{{owner.name}}</td>
+                        <td>{{owner.email}}</td>
+                        <td>{{owner.created_at | date:'MMM dd, yyyy'}}</td>
+                        <td>{{owner.carCount || 0}}</td>
+                        <td class="action-cell">
+                            <button class="action-btn view" ng-click="vm.viewOwnerDetails(owner)">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                            <button class="action-btn unblock" ng-click="vm.unblockOwner(owner)" ng-disabled="owner.processing">
+                                <span class="material-icons" ng-if="!owner.processing">check_circle</span>
+                                <span class="spinner" ng-if="owner.processing"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-if="vm.blockedOwners.length === 0">
+                        <td colspan="5" class="empty-state">No blocked owners found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

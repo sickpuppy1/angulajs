@@ -1,0 +1,203 @@
+<div class="manage-listings">
+    <div class="tabs">
+        <button class="tab-button" 
+                ng-class="{'active': vm.activeTab === 'bookings'}"
+                ng-click="vm.setActiveTab('bookings')">
+            <span class="material-icons">book</span>
+            Bookings
+        </button>
+        <button class="tab-button" 
+                ng-class="{'active': vm.activeTab === 'approved'}"
+                ng-click="vm.setActiveTab('approved')">
+            <span class="material-icons">check_circle</span>
+            Approved
+        </button>
+        <button class="tab-button" 
+                ng-class="{'active': vm.activeTab === 'rejected'}"
+                ng-click="vm.setActiveTab('rejected')">
+            <span class="material-icons">cancel</span>
+            Rejected
+        </button>
+        <button class="tab-button" 
+                ng-class="{'active': vm.activeTab === 'start-trips'}"
+                ng-click="vm.setActiveTab('start-trips')">
+            <span class="material-icons">play_circle</span>
+            Start Trips
+        </button>
+        <button class="tab-button" 
+                ng-class="{'active': vm.activeTab === 'end-trips'}"
+                ng-click="vm.setActiveTab('end-trips')">
+            <span class="material-icons">stop_circle</span>
+            End Trips
+        </button>
+    </div>
+
+    <div class="tab-content" ng-switch="vm.activeTab">
+        <!-- Pending Bookings Tab -->
+        <div ng-switch-when="bookings">
+            <div class="booking-list" ng-repeat="booking in vm.bookings">
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <h3>Booking Request</h3>
+                        <span class="booking-date">{{booking.formattedDates}}</span>
+                    </div>
+                    <div class="booking-details">
+                        <p><strong>User:</strong> {{booking.metadata.user_name || 'N/A'}}</p>
+                        <p><strong>Car:</strong> {{booking.car_details.year}} {{booking.car_details.make}} {{booking.car_details.model}}</p>
+                        <p><strong>Price per Day:</strong> ${{booking.car_details.price_per_day}}</p>
+                        <p><strong>Bid Amount:</strong> ${{booking.bid_amount}}</p>
+                        <p><strong>Total Amount:</strong> ${{booking.total_amount}}</p>
+                        <p>
+                            <strong>Duration:</strong> 
+                            <span>{{booking.start_date | date:'MMM dd'}} - {{booking.end_date | date:'MMM dd, yyyy'}}
+                            ({{booking.start_date | duration:booking.end_date}})</span>
+                        </p>
+                        <p><strong>Start Date:</strong>{{booking.start_date}}</p>
+                        <p><strong>End Date:</strong>{{booking.end_date}}</p>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="btn approve" ng-click="vm.approveBooking(booking.id)">
+                            <span class="material-icons">check</span>
+                            Approve
+                        </button>
+                        <button class="btn reject" ng-click="vm.rejectBooking(booking.id)">
+                            <span class="material-icons">close</span>
+                            Reject
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="no-bookings" ng-if="!vm.bookings.length">
+                <p>No pending bookings found</p>
+            </div>
+        </div>
+
+        <!-- Approved Bookings Tab -->
+        <div ng-switch-when="approved">
+            <div class="booking-list" ng-repeat="booking in vm.approved">
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <h3>Approved Booking</h3>
+                        <span class="booking-date">{{booking.formattedDates}}</span>
+                    </div>
+                    <div class="booking-details">
+                        <p><strong>User:</strong> {{booking.metadata.user_name || 'N/A'}}</p>
+                        <p><strong>Car:</strong> {{booking.car_details.year}} {{booking.car_details.make}} {{booking.car_details.model}}</p>
+                        <p><strong>Price per Day:</strong> ${{booking.car_details.price_per_day}}</p>
+                        <p><strong>Bid Amount:</strong> ${{booking.bid_amount}}</p>
+                        <p><strong>Total Amount:</strong> ${{booking.total_amount}}</p>
+                        <p>
+                            <strong>Duration:</strong> 
+                            <span>{{booking.start_date | date:'MMM dd'}} - {{booking.end_date | date:'MMM dd, yyyy'}}
+                            ({{booking.start_date | duration:booking.end_date}})</span>
+                        </p>
+                        <p><strong>Start Date:</strong>{{booking.start_date}}</p>
+                        <p><strong>End Date:</strong>{{booking.end_date}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="no-bookings" ng-if="!vm.approved.length">
+                <p>No approved bookings found</p>
+            </div>
+        </div>
+
+        <!-- Rejected Bookings Tab -->
+        <div ng-switch-when="rejected">
+            <div class="booking-list" ng-repeat="booking in vm.rejected">
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <h3>Rejected Booking</h3>
+                        <span class="booking-date">{{booking.formattedDates}}</span>
+                    </div>
+                    <div class="booking-details">
+                        <p><strong>User:</strong> {{booking.metadata.user_name || 'N/A'}}</p>
+                        <p><strong>Car:</strong> {{booking.car_details.year}} {{booking.car_details.make}} {{booking.car_details.model}}</p>
+                        <p><strong>Price per Day:</strong> ${{booking.car_details.price_per_day}}</p>
+                        <p><strong>Bid Amount:</strong> ${{booking.bid_amount}}</p>
+                        <p><strong>Total Amount:</strong> ${{booking.total_amount}}</p>
+                        <p>
+                            <strong>Duration:</strong> 
+                            <span>{{booking.start_date | date:'MMM dd'}} - {{booking.end_date | date:'MMM dd, yyyy'}}
+                            ({{booking.start_date | duration:booking.end_date}})</span>
+                        </p>
+                        <p><strong>Start Date:</strong>{{booking.start_date}}</p>
+                        <p><strong>End Date:</strong>{{booking.end_date}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="no-bookings" ng-if="!vm.rejected.length">
+                <p>No rejected bookings found</p>
+            </div>
+        </div>
+
+        <!-- Start Trips Tab -->
+        <div ng-switch-when="start-trips">
+            <div class="booking-list" ng-repeat="booking in vm.startTrips">
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <h3>Start Trip</h3>
+                        <span class="booking-date">{{booking.formattedDates}}</span>
+                    </div>
+                    <div class="booking-details">
+                        <p><strong>User:</strong> {{booking.metadata.user_name || 'N/A'}}</p>
+                        <p><strong>Car:</strong> {{booking.car_details.year}} {{booking.car_details.make}} {{booking.car_details.model}}</p>
+                        <p><strong>Price per Day:</strong> ${{booking.car_details.price_per_day}}</p>
+                        <p><strong>Bid Amount:</strong> ${{booking.bid_amount}}</p>
+                        <p><strong>Total Amount:</strong> ${{booking.total_amount}}</p>
+                        <p>
+                            <strong>Duration:</strong> 
+                            <span>{{booking.start_date | date:'MMM dd'}} - {{booking.end_date | date:'MMM dd, yyyy'}}
+                            ({{booking.start_date | duration:booking.end_date}})</span>
+                        </p>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="btn start" ng-click="vm.startTrip(booking.id)">
+                            <span class="material-icons">play_circle</span>
+                            Start Trip
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="no-trips" ng-if="!vm.startTrips.length">
+                <p>No trips to start today</p>
+            </div>
+        </div>
+
+        <!-- End Trips Tab -->
+        <div ng-switch-when="end-trips">
+            <div class="booking-list" ng-repeat="booking in vm.endTrips">
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <h3>End Trip</h3>
+                        <span class="booking-date">{{booking.formattedDates}}</span>
+                    </div>
+                    <div class="booking-details">
+                        <p><strong>User:</strong> {{booking.metadata.user_name || 'N/A'}}</p>
+                        <p><strong>Car:</strong> {{booking.car_details.year}} {{booking.car_details.make}} {{booking.car_details.model}}</p>
+                        <p><strong>Price per Day:</strong> ${{booking.car_details.price_per_day}}</p>
+                        <p><strong>Bid Amount:</strong> ${{booking.bid_amount}}</p>
+                        <p><strong>Total Amount:</strong> ${{booking.total_amount}}</p>
+                        <p>
+                            <strong>Duration:</strong> 
+                            <span>{{booking.start_date | date:'MMM dd'}} - {{booking.end_date | date:'MMM dd, yyyy'}}
+                            ({{booking.start_date | duration:booking.end_date}})</span>
+                        </p>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="btn approve" ng-click="vm.approveBooking(booking.id)">
+                            <span class="material-icons">check</span>
+                            Approve
+                        </button>
+                        <button class="btn reject" ng-click="vm.rejectBooking(booking.id)">
+                            <span class="material-icons">close</span>
+                            Reject
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="no-bookings" ng-if="!vm.endTrips.length">
+                <p>No end trips found</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+{
+  "name": "car-angularjs",
+  "version": "1.0.0",
+  "description": "# Car AngularJS App",
+  "main": "app/app.module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.1.1",
+    "angular": "^1.8.3",
+    "angular-animate": "^1.8.3",
+    "angularjs-toaster": "^3.0.0"
+  }
+}

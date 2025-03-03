@@ -1,0 +1,168 @@
+<div class="car-details-container" ng-init="vm.init()">
+    <!-- Loading spinner -->
+    <div ng-if="vm.isLoading" class="loading-container">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Car details content -->
+    <div ng-if="!vm.isLoading && vm.car" class="car-content">
+        <!-- Car gallery section -->
+        <div class="car-gallery">
+            <img ng-src="{{vm.car.images[0].data}}" 
+                 alt="{{vm.car.make}} {{vm.car.model}}"
+                 class="car-main-image"
+                 onerror="this.src='assets/images/car-placeholder.jpg'">
+            
+            <div class="car-thumbnails" ng-if="vm.car.images.length > 1">
+                <img ng-repeat="image in vm.car.images" 
+                     ng-src="{{image.data}}" 
+                     ng-class="{'active': $index === 0}"
+                     class="car-thumbnail" 
+                     alt="{{vm.car.make}} {{vm.car.model}} - Image {{$index + 1}}"
+                     onerror="this.src='assets/images/car-placeholder.jpg'">
+            </div>
+        </div>
+
+        <!-- Car details info -->
+        <div class="car-details-info">
+            <h1 class="car-title">{{vm.car.make}} {{vm.car.model}} {{vm.car.year}}</h1>
+            
+            <div class="car-location">
+                <i class="material-icons">location_on</i>
+                {{vm.car.location}}
+            </div>
+            
+            <div class="car-price">${{vm.car.price_per_day}} <span>per day</span></div>
+            
+            <div class="car-specs">
+                <div class="car-spec">
+                    <i class="material-icons">calendar_today</i>
+                    <span>{{vm.car.year}}</span>
+                </div>
+                
+                <div class="car-spec">
+                    <i class="material-icons">palette</i>
+                    <span>{{vm.car.colorName || vm.car.color}}</span>
+                </div>
+                
+                <div class="car-spec" ng-if="vm.car.transmission">
+                    <i class="material-icons">settings</i>
+                    <span>{{vm.car.transmission}}</span>
+                </div>
+                
+                <div class="car-spec" ng-if="vm.car.seats">
+                    <i class="material-icons">airline_seat_recline_normal</i>
+                    <span>{{vm.car.seats}} seats</span>
+                </div>
+                
+                <div class="car-spec" ng-if="vm.car.fuel_type">
+                    <i class="material-icons">local_gas_station</i>
+                    <span>{{vm.car.fuel_type}}</span>
+                </div>
+                
+                <div class="car-spec" ng-if="vm.car.fixed_miles">
+                    <i class="material-icons">speed</i>
+                    <span>{{vm.car.fixed_miles}} miles included</span>
+                </div>
+                
+                <div class="car-spec" ng-if="vm.car.rate_per_mile">
+                    <i class="material-icons">money</i>
+                    <span>${{vm.car.rate_per_mile}}/extra mile</span>
+                </div>
+            </div>
+            
+            <!-- Owner information -->
+            <div class="owner-info" ng-if="vm.hasValidOwner()">
+                <div class="owner-avatar">
+                    {{vm.owner.name[0]}}
+                </div>
+                <div class="owner-details">
+                    <div class="owner-name">{{vm.owner.name}}</div>
+                    <div class="owner-member-since">
+                        Member since {{vm.owner.created_at | date:'MMMM yyyy'}}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Booking form -->
+            <div class="booking-form">
+                <h3>Book This Car</h3>
+                
+                <div class="date-inputs">
+                    <div class="date-input">
+                        <label for="start-date">Start Date</label>
+                        <input type="text" 
+                               id="start-date" 
+                               ng-model="vm.bid.startDate" 
+                               placeholder="Select date"
+                               readonly>
+                        <i class="material-icons">calendar_today</i>
+                    </div>
+                    
+                    <div class="date-input">
+                        <label for="end-date">End Date</label>
+                        <input type="text" 
+                               id="end-date" 
+                               ng-model="vm.bid.endDate" 
+                               placeholder="Select date"
+                               readonly>
+                        <i class="material-icons">calendar_today</i>
+                    </div>
+                </div>
+                
+               
+                <div class="bid-amount">
+                    <label for="bid-amount">Your Bid (per day)</label>
+                    <div class="amount-input">
+                        <input type="number" 
+                            id="bid-amount"
+                            ng-model="vm.bid.amount" 
+                            min="{{vm.car.price_per_day}}" 
+                            step="1"
+                            onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = Math.ceil(this.value);"
+                            required>
+                    </div>
+                    <div class="hint-text">Minimum bid: ${{vm.car.price_per_day}}/day (whole dollars only)</div>
+                </div>
+                
+                <div class="price-summary" ng-if="vm.totalDays > 0">
+                    <div class="price-item">
+                        <span>Daily rate:</span>
+                        <span>${{vm.bid.amount}}</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Days:</span>
+                        <span>{{vm.totalDays}}</span>
+                    </div>
+                    <div class="price-total">
+                        <span>Total:</span>
+                        <span>${{vm.totalPrice}}</span>
+                    </div>
+                </div>
+                
+                <button class="place-bid-btn" 
+                        ng-click="vm.placeBid()"
+                        ng-disabled="!vm.bid.startDate || !vm.bid.endDate || vm.bid.amount < vm.car.price_per_day">
+                    Place Bid
+                </button>
+            </div>
+            
+            <!-- Car description -->
+            <div class="car-description" ng-if="vm.car.description">
+                <h3>Description</h3>
+                <p>{{vm.car.description}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error message -->
+    <div ng-if="!vm.isLoading && !vm.car" class="error-container">
+        <div class="error-icon">
+            <i class="material-icons">error_outline</i>
+        </div>
+        <h2>Car Not Found</h2>
+        <p>We couldn't find the car you're looking for.</p>
+        <button class="back-btn" ng-click="$state.go('home')">Back to Home</button>
+    </div>
+</div>

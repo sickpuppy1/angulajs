@@ -1,0 +1,28 @@
+<div class="login-container" mg-init="vm.init()">
+    <h1>Login</h1>
+    <form ng-submit="vm.login()" name="loginForm" novalidate>
+        <div class="form-group">
+            <input type="email" 
+                   name="email"
+                   ng-model="vm.user.email" 
+                   placeholder="Email" 
+                   required>    
+        </div>
+        <div class="form-group">
+            <input type="password" 
+                   name="password"
+                   ng-model="vm.user.password" 
+                   placeholder="Password" 
+                   required>
+        </div>
+        <button type="submit" ng-disabled="vm.isLoading">
+            <span ng-if="!vm.isLoading">Login</span>
+            <span ng-if="vm.isLoading">
+                <i class="material-icons rotating">refresh</i> Loading...
+            </span>
+        </button>
+    </form>
+    <p class="register-link">
+        Don't have an account? <a href="" ng-click="vm.goToRegister()">Register here</a>
+    </p>
+</div>

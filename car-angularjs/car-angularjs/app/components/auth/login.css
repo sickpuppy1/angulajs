@@ -1,0 +1,115 @@
+/* Login container styles - matching existing register-container */
+.login-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.login-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* Form group styles - matching existing styles */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 112, 74, 0.2);
+}
+
+/* Button styles - matching existing register-container button */
+.login-container button {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #005a37;
+}
+
+.login-container button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Register link styles - matching existing register-link */
+.register-link {
+    margin-top: 1rem;
+    text-align: center;
+    color: #666;
+}
+
+.register-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+    color: #005a3d;
+    text-decoration: underline;
+}
+
+/* Error states - matching existing validation styles */
+.form-group input.ng-touched.ng-invalid {
+    border-color: #dc3545;
+}
+
+.form-group input.ng-touched.ng-valid {
+    border-color: #28a745;
+}
+
+/* Loading state styles */
+.login-container button.loading {
+    position: relative;
+    color: transparent;
+}
+
+.login-container button.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: button-loading 0.8s linear infinite;
+}
+
+@keyframes button-loading {
+    to {
+        transform: rotate(360deg);
+    }
+}

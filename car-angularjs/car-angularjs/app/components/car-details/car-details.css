@@ -1,0 +1,424 @@
+/* Car details container */
+.car-details-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .car-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 992px) {
+    .car-content {
+      flex-direction: row;
+    }
+  }
+  
+  /* Car gallery */
+  .car-gallery {
+    flex: 1;
+    margin-bottom: 2rem;
+  }
+  
+  .car-main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .car-main-image:hover {
+    transform: scale(1.02);
+  }
+  
+  .car-thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .car-thumbnail {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+  }
+  
+  .car-thumbnail:hover {
+    opacity: 0.8;
+  }
+  
+  .car-thumbnail.active {
+    border: 2px solid var(--primary-color);
+  }
+  
+  /* Car details info */
+  .car-details-info {
+    flex: 1;
+  }
+  
+  .car-title {
+    font-size: 1.75rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--text-color);
+    font-weight: 700;
+  }
+  
+  .car-location {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  
+  .car-location i {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+    color: #888;
+  }
+  
+  .car-price {
+    font-size: 1.75rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .car-price span {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #666;
+  }
+  
+  .car-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 0;
+  }
+  
+  .car-spec {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .car-spec i {
+    color: #888;
+    font-size: 1.25rem;
+  }
+  
+  /* Owner info */
+  .owner-info {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .owner-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-right: 1rem;
+  }
+  
+  .owner-details {
+    flex: 1;
+  }
+  
+  .owner-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+  }
+  
+  .owner-member-since {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  /* Booking form */
+  .booking-form {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .booking-form h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.25rem;
+    color: var(--text-color);
+    font-weight: 600;
+  }
+  
+  .date-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .date-input {
+    position: relative;
+  }
+  
+  .date-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .date-input input {
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #fff;
+  }
+  
+  .date-input input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 112, 74, 0.1);
+  }
+  
+  .date-input i {
+    position: absolute;
+    right: 0.75rem;
+    top: 2.25rem;
+    color: #888;
+    pointer-events: none;
+  }
+  
+  .bid-amount {
+    margin-bottom: 1.5rem;
+  }
+  
+  .bid-amount label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .amount-input {
+    position: relative;
+  }
+  
+  .amount-input input {
+    width: 100%;
+    padding: 0.75rem;
+    padding-left: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+  
+  .amount-input input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 112, 74, 0.1);
+  }
+  
+  .amount-input::before {
+    content: "$";
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+  }
+  
+  .hint-text {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .price-summary {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .price-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: #666;
+  }
+  
+  .price-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 1.1rem;
+  }
+  
+  .place-bid-btn {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1rem;
+  }
+  
+  .place-bid-btn:hover {
+    background-color: #005a37;
+  }
+  
+  .place-bid-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Car description */
+  .car-description {
+    margin-bottom: 2rem;
+  }
+  
+  .car-description h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    color: var(--text-color);
+    font-weight: 600;
+  }
+  
+  .car-description p {
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  /* Loading state */
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(0, 112, 74, 0.2);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spinner 1s infinite linear;
+  }
+  
+  @keyframes spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Error container */
+  .error-container {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  
+  .error-icon {
+    margin-bottom: 1rem;
+  }
+  
+  .error-icon i {
+    font-size: 4rem;
+    color: #dc3545;
+  }
+  
+  .error-container h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: var(--text-color);
+  }
+  
+  .error-container p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .back-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .back-btn:hover {
+    background-color: #005a37;
+  }
+  
+  /* jQuery datepicker customizations */
+  .ui-datepicker {
+    border: none !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+    padding: 1rem !important;
+  }
+  
+  .ui-datepicker .ui-datepicker-header {
+    background: var(--primary-color) !important;
+    border: none !important;
+    border-radius: 4px !important;
+  }
+  
+  .ui-datepicker-calendar .ui-state-default {
+    border: none !important;
+    background: #f5f5f5 !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .ui-datepicker-calendar .ui-state-default:hover {
+    background: #e0e0e0 !important;
+  }
+  
+  .ui-datepicker-calendar .ui-state-active {
+    background: var(--primary-color) !important;
+    color: white !important;
+  }

@@ -1,0 +1,140 @@
+<div class="add-car-container">
+    <div class="form-header">
+        <button type="button" class="back-button" ng-click="vm.goBack()">
+            <span class="material-icons">arrow_back</span>
+            Back
+        </button>
+        <h2>Add a Car</h2>
+    </div>
+    <form name="carForm" ng-submit="vm.submitForm()" novalidate>
+        <div class="form-group">
+            <label for="make">Make</label>
+            <select id="make" 
+                    name="make" 
+                    ng-model="vm.carData.make"
+                    required>
+                <option value="">Select Make</option>
+                <option ng-repeat="make in vm.carMakes" value="{{make}}">{{make}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="model">Model:</label>
+            <input type="text" 
+                   id="model" 
+                   name="model" 
+                   ng-model="vm.carData.model" 
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" 
+                   id="year" 
+                   name="year" 
+                   ng-model="vm.carData.year" 
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="color">Color:</label>
+            <input type="color" 
+                   id="color" 
+                   name="color" 
+                   ng-model="vm.carData.color"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <select id="location" 
+                    name="location" 
+                    ng-model="vm.carData.location"
+                    required>
+                <option value="">Select Location</option>
+                <option ng-repeat="city in vm.cities">{{city}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="seats">No. of Seats:</label>
+            <input type="number" 
+                   id="seats" 
+                   name="seats" 
+                   ng-model="vm.carData.seats"
+                   min="1" 
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="transmission">Transmission:</label>
+            <select id="transmission" 
+                    name="transmission" 
+                    ng-model="vm.carData.transmission"
+                    required>
+                <option value="">Select Transmission</option>
+                <option ng-repeat="transmission in vm.transmissions">{{transmission}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fuel_type">Fuel Type:</label>
+            <select id="fuel_type" 
+                    name="fuel_type" 
+                    ng-model="vm.carData.fuel_type"
+                    required>
+                <option value="">Select Fuel Type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="electric">Electric</option>
+            </select>        
+        </div>
+        <div class="ratePerKm">
+            <label for="rate_per_mile">Rate per Km ($):</label>
+            <input type="number"
+                   id="rate_per_mile"
+                   name="rate_per_mile"
+                   ng-model="vm.carData.rate_per_mile"
+                   min="0"
+                   required>
+        </div>
+        <div class="fixedMiles">
+            <label for="fixed_miles">Fixed Miles:</label>
+            <input type="number"
+                   id="fixed_miles"
+                   name="fixed_miles"
+                   ng-model="vm.carData.fixed_miles"
+                   min="0"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="price_per_day">Price per Day ($):</label>
+            <input type="number" 
+                   id="price_per_day" 
+                   name="price_per_day" 
+                   ng-model="vm.carData.price_per_day"
+                   min="1" 
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="images">Images:</label>
+            <input type="file" 
+                   id="images" 
+                   name="images"
+                   accept="image/*"
+                   multiple
+                   onchange="angular.element(this).scope().vm.handleImageUpload(event)"
+                   required>
+        </div>
+        <div class="image-preview-container" ng-show="vm.carData.images.length > 0">
+            <h4>Image Previews</h4>
+            <div class="image-previews">
+                <div class="image-preview" ng-repeat="image in vm.carData.images track by image.id">
+                    <img ng-src="{{image.data}}" alt="Car preview">
+                    <div class="image-name">{{image.name}}</div>
+                    <button type="button" class="remove-image" ng-click="vm.removeImage($index)">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button type="submit" 
+                class="btn btn-primary"
+                ng-disabled="carForm.$invalid || vm.isSubmitting">
+            {{vm.isSubmitting ? 'Adding...' : 'Add Car'}}
+        </button>
+    </form>
+</div>

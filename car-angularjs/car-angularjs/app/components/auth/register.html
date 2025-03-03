@@ -1,0 +1,59 @@
+<div class="register-container" ng-init="vm.init()">
+    <h1>Create Account</h1>
+    
+    <form name="registerForm" ng-submit="vm.register()" novalidate>
+        <div class="form-group" ng-class="{'has-error': vm.errors.name}">
+            <label>Full Name</label>
+            <input type="text" 
+                   name="name" 
+                   ng-model="vm.user.name" 
+                   ng-blur="vm.validateName()">
+            <div class="error-message" ng-show="vm.errors.name">
+                {{vm.errors.name}}
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': vm.errors.email}">
+            <label>Email</label>
+            <input type="email" 
+                   name="email" 
+                   ng-model="vm.user.email" 
+                   ng-blur="vm.validateEmail()">
+            <div class="error-message" ng-show="vm.errors.email">
+                {{vm.errors.email}}
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': vm.errors.password}">
+            <label>Password</label>
+            <input type="password" 
+                   name="password" 
+                   ng-model="vm.user.password" 
+                   ng-blur="vm.validatePassword()">
+            <div class="error-message" ng-show="vm.errors.password">
+                {{vm.errors.password}}
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': vm.errors.mobile}">
+            <label>Mobile Number</label>
+            <input type="tel" 
+                   name="mobile" 
+                   ng-model="vm.user.mobile" 
+                   ng-blur="vm.validateMobile()">
+            <div class="error-message" ng-show="vm.errors.mobile">
+                {{vm.errors.mobile}}
+            </div>
+        </div>
+
+        <button type="submit" 
+                ng-class="{'loading': vm.isLoading}"
+                ng-disabled="vm.isLoading">
+            {{vm.isLoading ? '' : 'Register'}}
+        </button>
+    </form>
+
+    <div class="login-link">
+        Already have an account? <a href ng-click="vm.goToLogin()">Login here</a>
+    </div>
+</div>

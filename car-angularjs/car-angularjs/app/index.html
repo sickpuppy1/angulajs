@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="carApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>Car Rental App</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
+    <script src="../node_modules/angularjs-toaster/toaster.js"></script>
+    <link rel="stylesheet" href="../node_modules/angularjs-toaster/toaster.css">
+    <script src="../node_modules/angular-animate/angular-animate.js"></script>
+    <!-- Add these before your other scripts -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+</head>
+<body>
+    <!-- Constant Navbar -->
+    <header class="header" ng-controller="NavbarController as nav">
+        <div class="logo" ui-sref="home">Chaabi</div>
+        <div class="nav-buttons">
+            <button ui-sref="login" class="btn" ng-if="!userSession">Login</button>
+            <button ui-sref="register" class="btn" ng-if="!userSession">Register</button>
+            <a ui-sref="admin" class="admin-btn" ng-if="nav.userSession && nav.isAdmin()">
+                <span class="material-icons">admin_panel_settings</span>
+                Admin Panel
+            </a>
+            
+            <!-- other nav items -->
+        </div>
+    </header>
+    
+    <!-- Dynamic Content -->
+    <div ui-view></div>
+
+    <!-- Third-party Scripts -->
+    
+    <!-- App Initialize -->
+    <script src="./app.module.js"></script>
+     <!-- Third-party Scripts -->
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.29/angular-ui-router.min.js"></script>
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.2.4/async.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Services -->
+    <script src="./services/DatabaseService.js"></script>
+    <script src="./services/ToastService.js"></script>
+    <script src="./services/UserService.js"></script>
+    <script src="./services/AuthService.js"></script>
+    <script src="./services/CarDatabaseService.js"></script>
+    <script src="./services/CarService.js"></script>
+    <script src="./services/BookingService.js"></script>
+    <script src="./services/MessageService.js"></script>
+    <script src="./services/StyleLoaderService.js"></script>
+    <script src="./services/UtilService.js"></script>
+
+    <!-- Routes -->
+    <script src="./app.routes.js"></script>
+
+    <!-- Controllers -->
+    <script  src="./components/navbar/navbar.controller.js"></script>
+    <script  src="./components/auth/login.controller.js"></script>
+    <script  src="./components/auth/register.controller.js"></script>
+    <script  src="./components/home/home.controller.js"></script>
+    <script  src="./components/add-car/add-car.controller.js"></script>
+    <script  src="./components/car-details/car-details.controller.js"></script>
+    <script  src="./components/my-bids/my-bids.controller.js"></script>
+    <script  src="./components/admin/admin.controller.js"></script>
+    <script  src="./components/messages/messages.controller.js"></script>
+    <script  src="filters/duration.filter.js"></script>
+    <script  src="./components/manage-listings/manage-listings.controller.js"></script>
+    <script  src="directives/bid-validator.directive.js"></script>
+    <script  src="./components/admin/tabs/analysis/analysis.controller.js"></script>
+    <script  src="./components/admin/tabs/listings/listings.controller.js"></script>
+    <script  src="./components/admin/tabs/owners/owners.controller.js"></script>
+    <script src="./directives/form-validators.directive.js"></script>
+    
+</body>
+</html>

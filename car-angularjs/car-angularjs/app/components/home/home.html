@@ -1,0 +1,152 @@
+<nav class="navbar">
+    <div class="nav-buttons">
+        <!-- Add this button before upload-car -->
+        <a ui-sref="manage-listings" class="manage-btn" ng-if="vm.isAuthenticated && vm.isOwner">
+            <span class="material-icons">dashboard</span>
+            Manage Listings
+        </a>
+        <a ui-sref="add-car" class="upload-car" ng-if="vm.isAuthenticated">Upload Your Car</a>
+        <a ui-sref="my-bids" class="my-bids-btn" ng-if="vm.isAuthenticated">
+            <span class="material-icons">gavel</span>
+            My Bids
+        </a>
+        <a ui-sref="messages" class="messages" ng-if="vm.isAuthenticated">
+            <span class="material-icons">mail</span>
+            <span class="badge" ng-bind="vm.unreadCount">0</span>
+        </a>
+        <button class="logout-btn" ng-if="vm.isAuthenticated" ng-click="vm.logout()">
+            <span class="material-icons">logout</span>
+            Sign Out
+        </button>
+        <button ui-sref="login" ng-if="!vm.isAuthenticated">Login</button>
+        <button ui-sref="register" ng-if="!vm.isAuthenticated">Register</button>
+    </div>
+</nav>
+<section class="features">
+    <div class="feature" ng-repeat="feature in homeCtrl.features">
+        <h3>{{feature.title}}</h3>
+        <p>{{feature.description}}</p>
+    </div>
+</section>
+
+<aside class="filters">
+    <div class="filter-group">
+        <label>Make</label>
+        <select ng-model="vm.filters.make">
+            <option value="">All</option>
+            <option ng-repeat="make in vm.makes" ng-value="make">{{make}}</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label>Year</label>
+        <select ng-model="vm.filters.year">
+            <option value="">All</option>
+            <option ng-repeat="year in vm.years" ng-value="year">{{year}}</option>
+        </select>
+    </div>
+    <button ng-click="vm.applyFilters()">Apply Filters</button>
+</aside>
+
+<div class="home-page">
+    <div class="filters-section">
+        <!-- Existing filters remain the same -->
+    </div>
+    
+    <div class="car-listings">
+        <div class="section-header">
+            <h2>Available Cars</h2>
+            
+            <!-- Sort dropdown -->
+            <div class="sort-dropdown">
+                <label for="sort-by">Sort by:</label>
+                <select id="sort-by" ng-model="vm.sort" ng-change="vm.changeSort(vm.sort)">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="year-desc">Year: Newest First</option>
+                    <option value="year-asc">Year: Oldest First</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div class="loading-container" ng-if="vm.isLoading">
+            <div class="loader"></div>
+            <p>Loading cars...</p>
+        </div>
+        
+        <!-- No results message -->
+        <div class="no-results" ng-if="vm.noResults && !vm.isLoading">
+            <p>No cars found matching your criteria.</p>
+            <button class="btn btn-primary" ng-click="vm.clearFilters()">Clear Filters</button>
+        </div>
+        
+        <!-- Car grid -->
+        <div class="car-grid" ng-if="!vm.isLoading && !vm.noResults">
+            <div class="car-card" ng-repeat="car in vm.cars" ui-sref="carDetails({id: car.car_id})">
+                <div class="car-image">
+                    <img ng-src="{{car.images[0].data || 'assets/images/car-placeholder.png'}}" alt="{{car.make}} {{car.model}}">
+                </div>
+                <div class="car-details">
+                    <h3>{{car.year}} {{car.make}} {{car.model}}</h3>
+                    <p class="car-location">
+                        <span class="material-icons">location_on</span>
+                        {{car.location}}
+                    </p>
+                    <div class="car-price">${{car.price_per_day}} per day</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination-controls" ng-if="vm.pagination.totalPages > 1">
+            <button 
+                class="page-btn" 
+                ng-disabled="vm.pagination.page === 1" 
+                ng-click="vm.changePage(vm.pagination.page - 1)">
+                &laquo; Prev
+            </button>
+            
+            <button 
+                class="page-btn" 
+                ng-class="{'active': vm.pagination.page === 1}" 
+                ng-click="vm.changePage(1)">
+                1
+            </button>
+            
+            <span ng-if="vm.pagination.page > 3">...</span>
+            
+            <button 
+                class="page-btn" 
+                ng-repeat="p in [vm.pagination.page-1, vm.pagination.page, vm.pagination.page+1] | filter: p > 1 && p < vm.pagination.totalPages"
+                ng-class="{'active': vm.pagination.page === p}"
+                ng-click="vm.changePage(p)">
+                {{p}}
+            </button>
+            
+            <span ng-if="vm.pagination.page < vm.pagination.totalPages - 2">...</span>
+            
+            <button 
+                class="page-btn" 
+                ng-if="vm.pagination.totalPages > 1"
+                ng-class="{'active': vm.pagination.page === vm.pagination.totalPages}"
+                ng-click="vm.changePage(vm.pagination.totalPages)">
+                {{vm.pagination.totalPages}}
+            </button>
+            
+            <button 
+                class="page-btn" 
+                ng-disabled="vm.pagination.page === vm.pagination.totalPages" 
+                ng-click="vm.changePage(vm.pagination.page + 1)">
+                Next &raquo;
+            </button>
+        </div>
+        
+        <div class="pagination-info" ng-if="vm.pagination.total > 0">
+            Showing {{(vm.pagination.page - 1) * vm.pagination.pageSize + 1}} - 
+            {{Math.min(vm.pagination.page * vm.pagination.pageSize, vm.pagination.total)}}
+            of {{vm.pagination.total}} cars
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="analysis-tab" ng-init="vm.init()">
+    <h2>Platform Analytics</h2>
+    
+    <!-- Stats Grid -->
+    <div class="stats-grid" ng-class="{'loading': vm.loading.stats}">
+        <div class="loading-overlay" ng-if="vm.loading.stats">
+            <div class="spinner"></div>
+            <p>Loading statistics...</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><span class="material-icons">directions_car</span></div>
+            <div class="stat-content">
+                <div class="stat-value">{{vm.stats.totalCars || 0}}</div>
+                <div class="stat-label">Total Cars</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><span class="material-icons">people</span></div>
+            <div class="stat-content">
+                <div class="stat-value">{{vm.stats.totalUsers || 0}}</div>
+                <div class="stat-label">Registered Users</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><span class="material-icons">handshake</span></div>
+            <div class="stat-content">
+                <div class="stat-value">{{vm.stats.totalBookings || 0}}</div>
+                <div class="stat-label">Total Bookings</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><span class="material-icons">attach_money</span></div>
+            <div class="stat-content">
+                <div class="stat-value">${{vm.stats.totalRevenue || 0}}</div>
+                <div class="stat-label">Platform Revenue</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts Container -->
+    <div class="charts-container" ng-class="{'loading': vm.loading.charts}">
+        <div class="loading-overlay" ng-if="vm.loading.charts">
+            <div class="spinner"></div>
+            <p>Loading charts...</p>
+        </div>
+        
+        <div class="chart-card">
+            <h3>Monthly Bookings</h3>
+            <div class="chart-wrapper">
+                <canvas id="bookingsChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-card">
+            <h3>Top Car Models</h3>
+            <div class="chart-wrapper">
+                <canvas id="topCarsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

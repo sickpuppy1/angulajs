@@ -1,0 +1,296 @@
+<div class="messages-container">
+    <!-- Loading state -->
+    <div class="loading-indicator" ng-if="vm.isLoading">
+        <div class="spinner"></div>
+        <p>Loading messages...</p>
+    </div>
+
+    <!-- Main content -->
+    <div class="messages-content" ng-if="!vm.isLoading">
+        <!-- Conversations sidebar -->
+        <div class="conversations-sidebar">
+            <div class="sidebar-header">
+                <h3>My Messages</h3>
+            </div>
+            
+            <div class="empty-state" ng-if="vm.conversations.length === 0">
+                <span class="material-icons">forum</span>
+                <p>No conversations yet</p>
+                <small>Conversations begin when you place a bid on a car</small>
+            </div>
+            
+            <div class="conversations-list" ng-if="vm.conversations.length > 0">
+                <div class="conversation-item" 
+                     ng-repeat="conversation in vm.conversations"
+                     ng-class="{'active': vm.currentConversation.conversation_id === conversation.conversation_id}"
+                     ng-click="vm.selectConversation(conversation)">
+                    
+                    <div class="avatar">
+                        <span class="material-icons">person</span>
+                    </div>
+                    
+                    <div class="conversation-info">
+                        <div class="conversation-header">
+                            <span class="name">{{conversation.otherParticipant.name || 'Unknown User'}}</span>
+                            <span class="time">{{vm.formatTime(conversation.lastMessage.timestamp)}}</span>
+                        </div>
+                        
+                        <div class="car-info" ng-if="conversation.carDetails">
+                            <span class="material-icons">directions_car</span> 
+                            {{conversation.carDetails.make}} {{conversation.carDetails.model}}
+                        </div>
+                        
+                        <div class="preview">
+                            <span ng-if="conversation.lastMessage.type === 'text' || !conversation.lastMessage.type">
+                                {{conversation.lastMessage.content}}
+                            </span>
+                            <span ng-if="conversation.lastMessage.type === 'image'">
+                                <i class="material-icons">photo</i> Image
+                            </span>
+                            <span ng-if="conversation.lastMessage.type === 'bid'">
+                                <i class="material-icons">payments</i> Bid Placed
+                            </span>
+                            <span ng-if="conversation.lastMessage.type === 'system'">
+                                <i class="material-icons">info</i> {{conversation.lastMessage.content}}
+                            </span>
+                            
+                            <div class="unread-badge" ng-if="conversation.unreadCount">
+                                {{conversation.unreadCount}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Messages area -->
+        <div class="messages-area" ng-if="vm.currentConversation">
+            <!-- Conversation header -->
+            <div class="conversation-header">
+                <div class="header-info">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <span class="material-icons">person</span>
+                        </div>
+                        <span class="name">{{vm.getOtherUserName()}}</span>
+                    </div>
+                    
+                    <div class="car-info" ng-if="vm.currentConversation.carDetails">
+                        <span class="material-icons">directions_car</span>
+                        <span>{{vm.currentConversation.carDetails.make}} {{vm.currentConversation.carDetails.model}}</span>
+                        <span>${{vm.currentConversation.carDetails.price_per_day}} / day</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Messages list -->
+            <div class="messages-list" ng-class="{'loading': vm.isLoadingMessages}">
+                <div class="loading-spinner" ng-if="vm.isLoadingMessages">
+                    <div class="spinner"></div>
+                </div>
+                
+                <div class="empty-state" ng-if="vm.messages.length === 0 && !vm.isLoadingMessages">
+                    <span class="material-icons">chat</span>
+                    <p>No messages yet</p>
+                    <p class="hint">Start a conversation by sending a message</p>
+                </div>
+                
+                <!-- Simple message display -->
+                <div ng-repeat="message in vm.messages" class="message-wrapper">
+                    <!-- System message -->
+                    <div class="system-message" ng-if="message.type === 'system'">
+                        <div class="system-content">
+                            <span class="material-icons">info</span>
+                            <span>{{message.content}}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Regular message -->
+                    <div class="message" 
+                         ng-if="message.type !== 'system' && message.type !== 'bid'"
+                         ng-class="{'own-message': message.sender_id === vm.currentUser.user_id}">
+                        
+                        <div class="message-content">
+                            <p ng-if="message.content">{{message.content}}</p>
+                            
+                            <div class="image-content" ng-if="message.type === 'image' && message.imageUrl">
+                                <img ng-src="{{message.imageUrl}}" alt="Image">
+                            </div>
+                            
+                            <div class="message-meta">
+                                <span class="time">{{message.timestamp | date:'shortTime'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bid message -->
+                    <div class="bid-message" ng-if="message.type === 'bid'">
+                        <div class="bid-content" ng-class="{'own-message': message.sender_id === vm.currentUser.user_id}">
+                            <div class="bid-header">
+                                <span class="material-icons">payments</span>
+                                <span>Rental Bid</span>
+                            </div>
+                            
+                            <div class="bid-details">
+                                <div class="bid-row">
+                                    <span class="label">Dates:</span>
+                                    <span class="value">{{message.bidData.startDate | date:'MMM d'}} - {{message.bidData.endDate | date:'MMM d, yyyy'}}</span>
+                                </div>
+                                <div class="bid-row">
+                                    <span class="label">Price:</span>
+                                    <span class="value">${{message.bidData.amount}}/day</span>
+                                </div>
+                                <div class="bid-row total">
+                                    <span class="label">Total:</span>
+                                    <span class="value">${{message.bidData.total}}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bid-status" ng-if="message.bidData.status">
+                                <div class="status-badge" ng-class="message.bidData.status">
+                                    {{message.bidData.status}}
+                                </div>
+                            </div>
+                            
+                            <div class="bid-actions" ng-if="vm.currentUser.role === 'owner' && !message.bidData.status">
+                                <button class="accept-btn" ng-click="vm.acceptBid(message)">Accept</button>
+                                <button class="reject-btn" ng-click="vm.rejectBid(message)">Reject</button>
+                            </div>
+                            
+                            <div class="message-meta">
+                                <span class="time">{{message.timestamp | date:'shortTime'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Message input -->
+            <div class="message-input-area">
+                <!-- Image preview -->
+                <div class="image-preview" ng-show="vm.imagePreview">
+                    <img ng-src="{{vm.imagePreview}}" alt="Preview">
+                    <button class="remove-btn" ng-click="vm.removeImage()">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                
+                <!-- Input form -->
+                <div class="input-container">
+                    <button class="attachment-btn" ng-click="vm.openImageUpload()">
+                        <span class="material-icons">photo</span>
+                    </button>
+                    
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="angular.element(this).scope().vm.onImageSelected(this)">
+                    
+                    <button class="attachment-btn" ng-if="vm.currentUser.role === 'user'" ng-click="vm.openBidModal()">
+                        <span class="material-icons">payments</span>
+                    </button>
+                    
+                    <textarea class="message-input" 
+                              ng-model="vm.newMessage" 
+                              placeholder="Type a message..."
+                              ng-keypress="$event.keyCode === 13 && !$event.shiftKey ? vm.sendMessage() : null"></textarea>
+                    
+                    <button class="send-btn" ng-click="vm.sendMessage()">
+                        <span class="material-icons">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty state when no conversation selected -->
+        <div class="messages-area empty-state" ng-if="!vm.currentConversation">
+            <div class="empty-content">
+                <span class="material-icons">forum</span>
+                <h3>Select a conversation</h3>
+                <p>Choose a conversation from the sidebar to start messaging</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bid modal -->
+    <div class="modal bid-modal" ng-if="vm.bidData.showModal">
+        <div class="modal-overlay" ng-click="vm.closeBidModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Place a Bid</h3>
+                <button class="close-btn" ng-click="vm.closeBidModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Car info -->
+                <div class="car-summary" ng-if="vm.currentConversation.carDetails">
+                    <div class="car-image" ng-if="vm.currentConversation.carDetails.images && vm.currentConversation.carDetails.images.length">
+                        <img ng-src="{{vm.currentConversation.carDetails.images[0].data || vm.currentConversation.carDetails.images[0]}}" alt="Car">
+                    </div>
+                    <div class="car-details">
+                        <h4>{{vm.currentConversation.carDetails.make}} {{vm.currentConversation.carDetails.model}}</h4>
+                        <p class="car-price">${{vm.currentConversation.carDetails.price_per_day}} per day</p>
+                    </div>
+                </div>
+                
+                <!-- Date selector -->
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="text" id="start-date" placeholder="Select start date" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="end-date">End Date</label>
+                    <input type="text" id="end-date" placeholder="Select end date" readonly>
+                </div>
+                
+                <!-- Price input -->
+                <div class="form-group">
+                    <label for="bid-amount">Your Bid (per day)</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="number" 
+                               id="bid-amount"
+                               ng-model="vm.bidData.amount" 
+                               placeholder="Enter amount" 
+                               min="1">
+                    </div>
+                    <p class="input-hint" ng-if="vm.currentConversation.carDetails">
+                        Suggested: ${{vm.currentConversation.carDetails.price_per_day * 1.01}} - ${{vm.currentConversation.carDetails.price_per_day*1.5}}
+                    </p>
+                </div>
+                
+                <!-- Validation error -->
+                <div class="validation-error" ng-if="vm.bidData.validationError">
+                    {{vm.bidData.validationError}}
+                </div>
+                
+                <!-- Bid summary -->
+                <div class="bid-summary" ng-if="vm.bidData.startDate && vm.bidData.endDate && vm.bidData.amount">
+                    <h4>Bid Summary</h4>
+                    <div class="summary-row">
+                        <span>Daily Rate:</span>
+                        <span>${{vm.bidData.amount}}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Duration:</span>
+                        <span>{{vm.calculateDays(vm.bidData.startDate, vm.bidData.endDate)}} days</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>${{vm.calculateBidTotal(vm.bidData)}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="secondary-btn" ng-click="vm.closeBidModal()">Cancel</button>
+                <button class="primary-btn" 
+                        ng-click="vm.placeBid()"
+                        ng-disabled="!vm.bidData.startDate || !vm.bidData.endDate || !vm.bidData.amount || vm.bidData.processing">
+                    <span ng-if="!vm.bidData.processing">Place Bid</span>
+                    <span class="spinner small" ng-if="vm.bidData.processing"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="tab-pane" ng-init="vm.init()">
+    <h2>Pending Listings for Approval</h2>
+    
+    <div class="listings-container" ng-class="{'loading': vm.loading.listings}">
+        <div class="loading-overlay" ng-if="vm.loading.listings">
+            <div class="spinner"></div>
+            <p>Loading listings...</p>
+        </div>
+        
+        <div class="filter-bar">
+            <input type="text" 
+                   ng-model="vm.listingSearch" 
+                   placeholder="Search listings..." 
+                   class="search-input">
+                   
+            <div class="filter-dropdown">
+                <label>Sort By:</label>
+                <select ng-model="vm.listingSort">
+                    <option value="date-desc">Newest First</option>
+                    <option value="date-asc">Oldest First</option>
+                    <option value="price-desc">Price (High to Low)</option>
+                    <option value="price-asc">Price (Low to High)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="listings-grid">
+            <div class="listing-card" ng-repeat="listing in vm.pendingListings | filter:vm.listingSearch | orderBy:vm.getListingOrder(vm.listingSort)">
+                <div class="listing-img">
+                    <img ng-src="{{listing.images[0].data || 'assets/car-placeholder.jpg'}}" alt="{{listing.make}} {{listing.model}}">
+                </div>
+                <div class="listing-details">
+                    <h3>{{listing.make}} {{listing.model}} ({{listing.year}})</h3>
+                    <p><strong>Owner:</strong> {{listing.ownerName}}</p>
+                    <p><strong>Price:</strong> ${{listing.price_per_day}}/day</p>
+                    <p><strong>Location:</strong> {{listing.location}}</p>
+                    <p><strong>Submitted:</strong> {{listing.created_at | date:'MMM dd, yyyy'}}</p>
+                </div>
+                <div class="listing-actions">
+                    <button class="action-btn approve" ng-click="vm.approveListing(listing)">
+                        <span class="material-icons">check_circle</span>
+                        Approve
+                    </button>
+                    <button class="action-btn reject" ng-click="vm.rejectListing(listing)">
+                        <span class="material-icons">cancel</span>
+                        Reject
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="empty-state" ng-if="!vm.pendingListings.length">
+            <span class="material-icons">check_circle</span>
+            <p>No pending listings to approve at this time.</p>
+        </div>
+    </div>
+</div>

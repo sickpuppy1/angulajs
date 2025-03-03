@@ -1,0 +1,32 @@
+<div class="admin-container" ng-init="vm.init()">
+    <header class="admin-header">
+        <button class="logout-btn" ng-click="vm.logout()">
+            <i class="material-icons">logout</i>
+            Logout
+        </button>
+    </header>
+    <div class="admin-panel">
+        <h2 class="admin-title">Admin Dashboard</h2>
+        <div class="tab-navigation">
+            <a class="tab-button" 
+               ui-sref="admin.analysis" 
+               ui-sref-active="active">
+                <span class="material-icons">analytics</span>
+                Platform Analysis
+            </a>
+            <a class="tab-button" 
+               ui-sref="admin.listings" 
+               ui-sref-active="active">
+                <span class="material-icons">directions_car</span>
+                Pending Listings
+            </a>
+            <a class="tab-button" 
+               ui-sref="admin.owners" 
+               ui-sref-active="active">
+                <span class="material-icons">people</span>
+                Owner Management
+            </a>
+        </div>
+        <div class="tab-content" ui-view></div>
+    </div>
+</div>
